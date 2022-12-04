@@ -16,36 +16,30 @@ class SummaryStatisticsRoute {
     this.router.get("/", async (req: Request, res: Response) => {
       const allSalarySummaryStats =
         await this.summaryStatsController.fetchSummaryStatsForAllSalaries();
+
       res.send(allSalarySummaryStats);
     });
 
     this.router.get("/on-contract", async (req: Request, res: Response) => {
       const onContractSalarySummaryStats =
         await this.summaryStatsController.fetchSummaryStatsForAllOnContractSalaries();
+
       res.send(onContractSalarySummaryStats);
     });
 
-    this.router.get(
-      "/department/:department",
-      async (req: Request, res: Response) => {
-        const eachDepartmentSalarySummaryStats =
-          await this.summaryStatsController.fetchSummaryStatsForEachDepartment(
-            req.params.department
-          );
-        res.send(eachDepartmentSalarySummaryStats);
-      }
-    );
+    this.router.get("/each-department", async (req: Request, res: Response) => {
+      const eachDepartmentSalarySummaryStats =
+        await this.summaryStatsController.fetchSummaryStatsForEachDepartment();
+
+      res.send(eachDepartmentSalarySummaryStats);
+    });
 
     this.router.get(
-      "/department/:department/sub_department/:sub_department",
+      "/each-department-and-sub-department",
       async (req: Request, res: Response) => {
         const eachDepartmentAndSubDepartmentSalarySummaryStats =
-          await this.summaryStatsController.fetchSummaryStatsForEachDepartmentAndSubDepartment(
-            {
-              department: req.params.department,
-              subDepartment: req.params.sub_department,
-            }
-          );
+          await this.summaryStatsController.fetchSummaryStatsForEachDepartmentAndSubDepartment();
+
         res.send(eachDepartmentAndSubDepartmentSalarySummaryStats);
       }
     );

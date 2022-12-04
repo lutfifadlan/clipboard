@@ -10,8 +10,8 @@ import log4js from "log4js";
 import SalaryRouter from "./routers/SalaryRouter";
 import SummaryStatisticsRouter from "./routers/SummaryStatisticsRouter";
 import AuthRouter from "./routers/AuthRouter";
+import { authorizationMiddleware } from "./middlewares/authorization-middleware";
 import { insertDatasetToRedis } from "./utils/insert-dataset";
-import { authorizationMiddleware } from "./middlwares/authorization-middlware";
 
 const accessLogStream = createStream("access.log", {
   interval: "1d",
@@ -31,13 +31,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(helmet());
-
 app.use("/auth", AuthRouter);
-app.use("/salaries", SalaryRouter, authorizationMiddleware);
+app.use("/salaries", authorizationMiddleware, SalaryRouter);
 app.use(
   "/salary-summary-stats",
-  SummaryStatisticsRouter,
-  authorizationMiddleware
+  authorizationMiddleware,
+  SummaryStatisticsRouter
 );
 
 (async () => await insertDatasetToRedis(redis))();

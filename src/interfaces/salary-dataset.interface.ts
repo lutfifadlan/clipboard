@@ -10,3 +10,9 @@ export interface ISalaryDataset {
 export interface IFormattedSalaryDataset {
   [key: string]: string;
 }
+
+export interface IDepartmentAndSubDepartmentSalaryDataset {
+  [key: string]: {
+    [key: string]: ISalaryDataset[];
+  };
+}

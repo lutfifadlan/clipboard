@@ -1,5 +1,9 @@
 import Redis from "ioredis";
-import { calculateSummaryStats } from "../utils/calculate-summary-stats";
+import {
+  calculateSummaryStats,
+  calculateDepartmentSalarySummaryStats,
+  calculateDepartmentAndSubDepartmentSalarySummaryStats,
+} from "../utils/calculate-summary-stats";
 
 export class SummaryStatisticController {
   private redisClient: Redis;
@@ -30,27 +34,15 @@ export class SummaryStatisticController {
     return calculateSummaryStats(filteredSalaries);
   }
 
-  async fetchSummaryStatsForEachDepartment(department: string) {
+  async fetchSummaryStatsForEachDepartment() {
     const allSalaries = await this.getAllRedisValues();
-    const filteredSalaries = allSalaries.filter(
-      (salary) => salary.department === department
-    );
-    return calculateSummaryStats(filteredSalaries);
+
+    return calculateDepartmentSalarySummaryStats(allSalaries);
   }
 
-  async fetchSummaryStatsForEachDepartmentAndSubDepartment({
-    department,
-    subDepartment,
-  }: {
-    department: string;
-    subDepartment: string;
-  }) {
+  async fetchSummaryStatsForEachDepartmentAndSubDepartment() {
     const allSalaries = await this.getAllRedisValues();
-    const filteredSalaries = allSalaries.filter(
-      (salary) =>
-        salary.department === department &&
-        salary.sub_department === subDepartment
-    );
-    return calculateSummaryStats(filteredSalaries);
+
+    return calculateDepartmentAndSubDepartmentSalarySummaryStats(allSalaries);
   }
 }

@@ -23,11 +23,34 @@ describe("/auth", () => {
 
   describe("POST /login", () => {
     test("failed login", async () => {
-      const response = await chai.request(app).post("/auth/login");
+      const response = await chai.request(app).post("/auth/login").send({
+        username: "lutfifadlan",
+        password: "Dummy123",
+      });
 
       expect(response.status).toEqual(401);
       expect(response.body).toEqual({
         message: "Invalid username or password",
+      });
+    });
+
+    test("failed login due to invalid request", async () => {
+      const response = await chai.request(app).post("/auth/login").send("");
+
+      expect(response.status).toEqual(400);
+      expect(response.body).toEqual({
+        errors: [
+          {
+            location: "body",
+            msg: "username must contains a string",
+            param: "username",
+          },
+          {
+            location: "body",
+            msg: "password must contains a string",
+            param: "password",
+          },
+        ],
       });
     });
 

@@ -12,7 +12,7 @@ export class SummaryStatisticController {
     this.redisClient = redisClient;
   }
 
-  private async getAllRedisValues() {
+  async getAllRedisValues() {
     const redisKeys = await this.redisClient.keys("*");
     const redisValues = await this.redisClient.mget(redisKeys);
 

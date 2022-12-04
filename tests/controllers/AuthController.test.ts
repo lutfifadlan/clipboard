@@ -2,7 +2,7 @@ import { describe, expect, it, beforeAll } from "vitest";
 import { AuthController } from "../../src/controllers/AuthController";
 
 describe("Auth Controller", () => {
-  let authController;
+  let authController: AuthController;
 
   beforeAll(() => {
     authController = new AuthController();

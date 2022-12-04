@@ -7,6 +7,8 @@ import app from "../../src/server";
 import { SalaryController } from "../../src/controllers/SalaryController";
 import { AuthController } from "../../src/controllers/AuthController";
 import { SalaryDataSample } from "../config/sample_data";
+import { ISalaryDatasetWithId } from "../../src/interfaces/salary-dataset.interface";
+import { IUserData } from "../../src/interfaces/user-data.interface";
 
 chai.use(chaiHttp);
 
@@ -32,7 +34,11 @@ vi.mock("ioredis", () => {
 });
 
 describe("/salaries", () => {
-  let redisClient, salaryController, authController, addedSalary, userData;
+  let redisClient: Redis;
+  let salaryController: SalaryController;
+  let authController: AuthController;
+  let addedSalary: ISalaryDatasetWithId;
+  let userData: IUserData;
 
   beforeAll(async () => {
     redisClient = new Redis();
@@ -43,7 +49,7 @@ describe("/salaries", () => {
     userData = authController.login({
       username: "lutfifadlan",
       password: "Dummy123!",
-    });
+    }) as IUserData;
   });
 
   afterAll(() => {
@@ -82,6 +88,45 @@ describe("/salaries", () => {
       expect(response.status).toEqual(403);
       expect(response.body).toEqual({
         message: "Token is invalid",
+      });
+    });
+
+    test("failed to add salary due to invalid request", async () => {
+      const response = await chai
+        .request(app)
+        .post("/salaries")
+        .auth(userData.access_token as string, { type: "bearer" })
+        .send("");
+
+      expect(response.status).toEqual(400);
+      expect(response.body).toEqual({
+        errors: [
+          {
+            location: "body",
+            msg: "name must contains a string",
+            param: "name",
+          },
+          {
+            location: "body",
+            msg: "salary must contains a number",
+            param: "salary",
+          },
+          {
+            location: "body",
+            msg: "currency must contains a string",
+            param: "currency",
+          },
+          {
+            location: "body",
+            msg: "department must contains a string",
+            param: "department",
+          },
+          {
+            location: "body",
+            msg: "sub_department must contains a string",
+            param: "sub_department",
+          },
+        ],
       });
     });
 

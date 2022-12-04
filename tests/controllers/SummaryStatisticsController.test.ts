@@ -26,7 +26,8 @@ vi.mock("ioredis", () => {
 });
 
 describe("Summary Statistics Controller", () => {
-  let redisClient, summaryStatisticsController;
+  let redisClient: Redis;
+  let summaryStatisticsController: SummaryStatisticController;
 
   beforeAll(() => {
     redisClient = new Redis();

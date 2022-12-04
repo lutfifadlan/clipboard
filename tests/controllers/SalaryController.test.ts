@@ -1,6 +1,7 @@
 import Redis from "ioredis";
 import { describe, expect, it, vi, beforeAll, afterAll } from "vitest";
 import { SalaryController } from "../../src/controllers/SalaryController";
+import { ISalaryDatasetWithId } from "../../src/interfaces/salary-dataset.interface";
 import { SalaryDataSample, SalaryBatchDataSample } from "../config/sample_data";
 
 vi.mock("ioredis", () => {
@@ -30,7 +31,9 @@ vi.mock("ioredis", () => {
 });
 
 describe("Salary Controller", () => {
-  let redisClient, salaryController;
+  let redisClient: Redis;
+  let addedSalary: ISalaryDatasetWithId;
+  let salaryController: SalaryController;
 
   beforeAll(() => {
     redisClient = new Redis();
@@ -43,7 +46,7 @@ describe("Salary Controller", () => {
 
   describe("addSalary", () => {
     it("should return added salary", async () => {
-      const addedSalary = await salaryController.addSalary(SalaryDataSample);
+      addedSalary = await salaryController.addSalary(SalaryDataSample);
 
       expect(addedSalary).toContain(SalaryDataSample);
     });
@@ -51,7 +54,7 @@ describe("Salary Controller", () => {
 
   describe("deleteSalary", () => {
     it("should return deleted salary", async () => {
-      const deletedSalary = await salaryController.deleteSalary();
+      const deletedSalary = await salaryController.deleteSalary(addedSalary.id);
 
       expect(deletedSalary).toContain(SalaryDataSample);
     });

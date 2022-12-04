@@ -5,7 +5,8 @@ import Redis from "ioredis";
 import morgan from "morgan";
 import { createStream } from "rotating-file-stream";
 import path from "path";
-import log4js from "log4js";
+import bodyParser from "body-parser";
+import morganBody from "morgan-body";
 
 import SalaryRouter from "./routers/SalaryRouter";
 import SummaryStatisticsRouter from "./routers/SummaryStatisticsRouter";
@@ -18,8 +19,6 @@ const accessLogStream = createStream("access.log", {
   interval: "1d",
   path: path.join(__dirname, "log"),
 });
-const logger = log4js.getLogger();
-logger.level = "info";
 
 const app = express();
 const redis = new Redis({
@@ -27,11 +26,15 @@ const redis = new Redis({
   port: 6379,
 });
 
-app.use(morgan("combined", { stream: accessLogStream }));
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(helmet());
+app.use(morgan("combined", { stream: accessLogStream }));
+
+morganBody(app);
+
 app.use("/auth", AuthRouter);
 app.use("/salaries", authorizationMiddleware, SalaryRouter);
 app.use(

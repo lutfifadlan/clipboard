@@ -16,3 +16,13 @@ export interface IDepartmentAndSubDepartmentSalaryDataset {
     [key: string]: ISalaryDataset[];
   };
 }
+
+export interface ISalaryDatasetWithId {
+  id: string;
+  name: string;
+  salary: number;
+  currency: string;
+  department: string;
+  on_contract?: boolean;
+  sub_department: string;
+}

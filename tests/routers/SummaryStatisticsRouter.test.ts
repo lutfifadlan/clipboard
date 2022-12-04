@@ -5,6 +5,7 @@ import { describe, test, expect, vi, afterAll, beforeAll } from "vitest";
 import app from "../../src/server";
 import { AuthController } from "../../src/controllers/AuthController";
 import { SalaryBatchDataSample } from "../config/sample_data";
+import { IUserData } from "../../src/interfaces/user-data.interface";
 
 chai.use(chaiHttp);
 
@@ -33,7 +34,8 @@ vi.mock("ioredis", () => {
 });
 
 describe("/salary-summary-stats", () => {
-  let authController, userData;
+  let authController: AuthController;
+  let userData: IUserData;
 
   beforeAll(async () => {
     authController = new AuthController();
@@ -41,7 +43,7 @@ describe("/salary-summary-stats", () => {
     userData = authController.login({
       username: "lutfifadlan",
       password: "Dummy123!",
-    });
+    }) as IUserData;
   });
 
   afterAll(() => {

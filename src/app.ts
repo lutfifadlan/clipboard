@@ -10,7 +10,8 @@ import log4js from "log4js";
 import SalaryRouter from "./routers/SalaryRouter";
 import SummaryStatisticsRouter from "./routers/SummaryStatisticsRouter";
 import AuthRouter from "./routers/AuthRouter";
-import { authorizationMiddleware } from "./middlewares/authorization-middleware";
+import authorizationMiddleware from "./middlewares/authorization.middleware";
+import errorMiddleware from "./middlewares/error.middleware";
 import { insertDatasetToRedis } from "./utils/insert-dataset";
 
 const accessLogStream = createStream("access.log", {
@@ -38,6 +39,7 @@ app.use(
   authorizationMiddleware,
   SummaryStatisticsRouter
 );
+app.use(errorMiddleware);
 
 (async () => await insertDatasetToRedis(redis))();
 

@@ -35,7 +35,7 @@ export const calculateDepartmentSalarySummaryStats = (
 
   const departmentSalaries = _.groupBy(salaryDataset, "department");
 
-  let summaryStats: IDepartmentSalarySummaryStats = {};
+  const summaryStats: IDepartmentSalarySummaryStats = {};
 
   for (const [key, values] of Object.entries(departmentSalaries)) {
     const salaries = _.pluck(values, "salary");
@@ -85,7 +85,7 @@ export const calculateDepartmentAndSubDepartmentSalarySummaryStats = (
     }
   }
 
-  let summaryStats: IDepartmentAndSubDepartmentSalarySummaryStats = {};
+  const summaryStats: IDepartmentAndSubDepartmentSalarySummaryStats = {};
 
   for (const [key, value] of Object.entries(
     departmentAndSubDepartmentSalaries

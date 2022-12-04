@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-export const authorizationMiddleware = (
+const authorizationMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -27,3 +27,5 @@ export const authorizationMiddleware = (
     next();
   });
 };
+
+export default authorizationMiddleware;

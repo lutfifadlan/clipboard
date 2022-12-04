@@ -82,6 +82,7 @@ Below are the list of endpoints within the service along with request and respon
       "sub_department": "Platform"
     }
     ```
+  - Note: get the `id` from `Get Salaries` endpoint
 - **Get Salaries**
 
   - URL: `GET http://localhost:3000/salaries`

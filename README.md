@@ -6,12 +6,12 @@
 
 - Make sure docker is installed in your machine
   - https://docs.docker.com/desktop/install/mac-install/
+- Run the Docker in your machine
 - Go the code repository root folder and run `docker-compose up`
 
 ### Without Docker
 
-if you want to run locally, don't forget to install redis and run it on the background first
-
+- Run `npm install`
 - For mac user:
   - if you don't have brew in your machine, run command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   - run `brew update`

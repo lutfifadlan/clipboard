@@ -1,0 +1,11 @@
+# compiled output
+.vscode
+/node_modules
+
+# code formatter
+.eslintrc
+.eslintignore
+
+# docker
+Dockerfile
+docker-compose.yml
